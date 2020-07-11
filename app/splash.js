@@ -7,7 +7,9 @@ import {colors} from './constants'
 
 class App extends Component {
     state = {  }
-    
+    componentDidMount() {
+       
+    }
     render() { 
         return ( 
             <View style={{backgroundColor:colors.primaryBackground,flex:1,justifyContent:"center",alignItems:"center"}}>

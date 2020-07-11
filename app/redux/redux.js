@@ -2,7 +2,11 @@
 import {createStore} from 'redux'
 
 const initialState={
+    isLoggedIn:true,
     login:{
+        
+    },
+    signup:{
         
     }
  }
@@ -10,7 +14,12 @@ const initialState={
 rootReducer=(istate,action)=>{
     var state = JSON.parse(JSON.stringify(istate))
     switch(action.type){
-        
+        case "LOGOUT": 
+            state.isLoggedIn=false
+            return state
+        case "LOGIN": 
+            state.isLoggedIn=true
+            return state
         default: 
             return state; 
     }    

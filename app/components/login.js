@@ -6,6 +6,10 @@ import Button  from '../reuseableComponents/button';
 import {colors}  from '../constants';
 class App extends Component {
     state = {  }
+
+    logIn=()=>{
+        this.props.dispatch({type:"LOGIN"})
+    }
     render() { 
         return (
             <ScrollView style={styles.root} contentContainerStyle={{alignItems:"stretch"}}>
@@ -24,9 +28,9 @@ class App extends Component {
                 <View style={{height:20}}/>
                 <Text style={{color:colors.textLight,textDecorationLine:"underline"}}>Forgot Password?</Text>
                 <View style={{height:20}}/>
-                <Button text="Login" style={{alignSelf:"center",height:45}}/>
+                <Button onPress={this.logIn} text="Login" style={{alignSelf:"center",height:45}}/>
                 <View style={{height:20}}/>
-                <Text style={{color:colors.textLight,textAlign:"center",textDecorationLine:"underline"}}>Dont have an account yet? <Text style={{color:colors.textDark}}>Sign Up</Text></Text>
+                <Text onPress={()=>this.props.navigation.navigate("Signup")} style={{color:colors.textLight,textAlign:"center",textDecorationLine:"underline"}}>Dont have an account yet? <Text style={{color:colors.textDark}}>Sign Up</Text></Text>
                 <View style={{height:40}}/>
                 <View style={{flexDirection:"row"}}>
                     <View style={{flex:1,height:2,backgroundColor:colors.textLight,marginTop:10}}></View>
