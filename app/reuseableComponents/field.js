@@ -10,12 +10,15 @@ class App extends Component {
     onFocus=()=>{
         Animated.parallel([
             Animated.timing(this.state.labelSize, {
-              toValue: 14,
-              duration: 150,
+                toValue: 14,
+                duration: 150,
+                useNativeDriver:false
+
             }),
             Animated.timing(this.state.containerHeight, {
                 toValue: 70,
                 duration: 150,
+                useNativeDriver:false
               }),
           ]).start();
           this.setState({showField:true},()=>this.field.focus())
@@ -27,10 +30,14 @@ class App extends Component {
                 Animated.timing(this.state.labelSize, {
                     toValue: 20,
                     duration: 150,
+                    useNativeDriver:false
+
                 }),
                 Animated.timing(this.state.containerHeight, {
                     toValue: 50,
                     duration: 150,
+                    useNativeDriver:false
+
                 })
             ]).start();
             this.setState({showField:false})

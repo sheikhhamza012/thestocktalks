@@ -36,7 +36,7 @@ class App extends Component {
                 />
                 <View style={{height:50}}/>
                 
-                <Button text="Login" style={{alignSelf:"center",height:45}}/>
+                <Button text="Sign Up" style={{alignSelf:"center",height:45}}/>
                 <View style={{height:20}}/>
                 <Text onPress={()=>this.props.navigation.navigate("Login")} style={{color:colors.textLight,textAlign:"center",textDecorationLine:"underline"}}>I already have an account? <Text style={{color:colors.textDark}}>Log in</Text></Text>
                 <View style={{height:100}}/>

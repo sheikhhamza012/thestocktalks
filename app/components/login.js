@@ -28,7 +28,7 @@ class App extends Component {
                 <View style={{height:20}}/>
                 <Text style={{color:colors.textLight,textDecorationLine:"underline"}}>Forgot Password?</Text>
                 <View style={{height:20}}/>
-                <Button onPress={this.logIn} text="Login" style={{alignSelf:"center",height:45}}/>
+                <Button onPress={this.logIn} text="Log In" style={{alignSelf:"center",height:45}}/>
                 <View style={{height:20}}/>
                 <Text onPress={()=>this.props.navigation.navigate("Signup")} style={{color:colors.textLight,textAlign:"center",textDecorationLine:"underline"}}>Dont have an account yet? <Text style={{color:colors.textDark}}>Sign Up</Text></Text>
                 <View style={{height:40}}/>

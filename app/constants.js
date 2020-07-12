@@ -13,7 +13,10 @@ export const api={
 export const colors={
     primaryBackground:"#161F40",
     textDark:"#EBEBEB",
+    searchBackground:"#39415D",
     textLight:"#878C9B",
      mustard:"#CEAD36",
      fb:"#355BE2",
+     green:"#4FBF85",
+     red:"#FE5293",
 }
