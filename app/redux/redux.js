@@ -13,7 +13,7 @@ const initialState={
         stock:{
             stockName:"Axis Bank",
             company  :"Axis Bank",
-            price:22,
+            price:22.22,
             up:12,
             down:11
         }

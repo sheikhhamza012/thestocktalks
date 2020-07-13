@@ -19,4 +19,6 @@ export const colors={
      fb:"#355BE2",
      green:"#4FBF85",
      red:"#FE5293",
+     yellow:"#DCB93D",
+     commentBackGround:'#373E5B'
 }
