@@ -19,11 +19,15 @@ class App extends Component {
                 <View style={{height:30}}/>
                 <Field  labelText={"Email"}
                         handleInput={this.handleInput}
+                        refs={r=>this.email=r}
+
                 />
                 <View style={{height:50}}/>
                 <Field  labelText={"Password"}
                         password={true}
                         handleInput={this.handleInput}
+                        refs={r=>this.password=r}
+
                 />
                 <View style={{height:20}}/>
                 <Text style={{color:colors.textLight,textDecorationLine:"underline"}}>Forgot Password?</Text>

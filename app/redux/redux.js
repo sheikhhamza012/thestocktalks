@@ -2,7 +2,7 @@
 import {createStore} from 'redux'
 
 const initialState={
-    isLoggedIn:true,
+    isLoggedIn:false,
     login:{
         
     },

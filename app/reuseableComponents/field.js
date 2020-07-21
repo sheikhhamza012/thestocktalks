@@ -44,23 +44,34 @@ class App extends Component {
         }
     }
     render() { 
-        const {labelText,password,errorMsg} = this.props
+        const {labelText,password,errorMsg,handleInput,name,refs,next} = this.props
         return (
             <>
                 <AnimatedTouchable onPress={this.onFocus} style={{borderBottomColor:colors.textLight,borderBottomWidth:1,paddingVertical:10,height:this.state.containerHeight}}>
                         <Animated.Text style={{color:colors.textDark,fontSize:this.state.labelSize,fontFamily:"ABeeZee"}}>{labelText}</Animated.Text>
                         <View style={{flexDirection:"row"}}>
+                            < TextInput style={styles.fieldStyle}
+                                onChangeText={t=>{
+                                    this.setState({value:t})
+                                    handleInput({name,val:t})
 
-                            {this.state.showField&&
-                                < TextInput style={styles.fieldStyle}
-                                    onChangeText={t=>this.setState({value:t})}
-                                    selectionColor={colors.textLight}
-                                    ref={r=>this.field=r}
-                                    onBlur={this.onBlur}
-                                    onFocus={this.onFocus}
-                                    secureTextEntry={this.state.showPassword}
-                                />
-                            }
+                                }}
+                                blurOnSubmit={next?false:true}
+                                selectionColor={colors.textLight}
+                                ref={r=>{
+                                    refs(r)
+                                    return this.field=r
+                                }}
+                                onBlur={this.onBlur}
+                                onFocus={this.onFocus}
+                                secureTextEntry={this.state.showPassword}
+                                onSubmitEditing={()=>{
+                                    console.log(this.props)
+                                    if(next){
+                                        next().focus()
+                                    }
+                                }}
+                            />
                             {password&&
                                 <TouchableHighlight style={styles.eye} onPress={()=>this.setState({showPassword:!this.state.showPassword})} >
                                     <Icon name="eye" size={20} color={colors.textDark} />
@@ -83,7 +94,7 @@ const styles = StyleSheet.create({
     },
     eye:{
         position:"absolute",
-        bottom:2,
+        bottom:20,
         right:0,
         paddingHorizontal:10
     },
