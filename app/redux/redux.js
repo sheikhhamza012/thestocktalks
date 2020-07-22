@@ -3,12 +3,6 @@ import {createStore} from 'redux'
 
 const initialState={
     isLoggedIn:false,
-    login:{
-        
-    },
-    signup:{
-        
-    },
     home:{
         stock:{
             stockName:"Axis Bank",

@@ -44,7 +44,7 @@ class App extends Component {
         }
     }
     render() { 
-        const {labelText,password,errorMsg,handleInput,name,refs,next} = this.props
+        const {labelText,value,autoCapitalise,password,errorMsg,handleInput,name,refs,next} = this.props
         return (
             <>
                 <AnimatedTouchable onPress={this.onFocus} style={{borderBottomColor:colors.textLight,borderBottomWidth:1,paddingVertical:10,height:this.state.containerHeight}}>
@@ -71,6 +71,8 @@ class App extends Component {
                                         next().focus()
                                     }
                                 }}
+                                autoCapitalize={autoCapitalise}
+                                value={value}
                             />
                             {password&&
                                 <TouchableHighlight style={styles.eye} onPress={()=>this.setState({showPassword:!this.state.showPassword})} >

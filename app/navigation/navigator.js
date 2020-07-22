@@ -1,22 +1,44 @@
 import React, { Component } from 'react';
-import { View,TouchableOpacity,Platform,Image } from 'react-native';
+import { View,TouchableOpacity,Platform,Image, ActivityIndicator ,AsyncStorage} from 'react-native';
 import Text from '../reuseableComponents/Text'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import imports from '../imports'
-import {colors} from '../constants'
+import {colors,api} from '../constants'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { connect } from 'react-redux';
+import {axios} from '../reuseableComponents/externalFunctions'
+
 const Stack = createStackNavigator();
 
 @connect(state=>state)
 export default class App extends Component {
   state = { isLoggingIn:true }
   componentDidMount=()=>{
-    setTimeout(()=>{
+    setTimeout(async()=>{
+      var token = await AsyncStorage.getItem('token')
       this.setState({isLoggingIn:false})
+      if(token){
+        this.props.dispatch({type:"LOGIN"})
+      }
     },1000 )
   }
+  asGuest=()=>{
+    this.setState({isLoading:true})
+    axios('get',api.guest).then(async ({data})=>{
+      this.setState({isLoading:false})
+      if(data.error){
+          alert(data.msg);
+          return
+      }
+      AsyncStorage.setItem('token',data.token)
+      this.props.dispatch({type:'LOGIN'})
+  }).catch(e=>{
+      this.setState({isLoading:false})
+      this.refs.toast.show(e.message)
+      }
+  )
+}
   render() {
     return ( 
       <Stack.Navigator>
@@ -26,30 +48,53 @@ export default class App extends Component {
           }} />
         }
         {this.props.isLoggedIn?
-          <Stack.Screen name="Home" component={imports.home} options={{
+          <Stack.Screen name="Home" component={imports.home} options={({navigation})=>({
             headerStyle:{backgroundColor:colors.primaryBackground,elevation: 0,shadowOpacity: 0,borderBottomWidth: 0},
             headerTintColor:colors.textDark,
             headerTitle:props=><Text style={{fontSize:20,marginLeft:Platform.OS==="ios"?-100: 20,color:colors.textDark}}></Text>,
             headerRight:props=>(<TouchableOpacity><Text style={{textDecorationLine:"underline",color:colors.textLight,fontSize:16,marginRight:15}}>as Guest</Text></TouchableOpacity>),
-            headerLeft:props=><Hamburger {...props}/>
-          }} />
+            headerLeft:props=><Hamburger {...props} navigation={navigation}/>
+          })} />
           :
           <>
-            <Stack.Screen name="Login" component={imports.login} options={{
+            <Stack.Screen name="Login" component={imports.login} options={({navigation})=>({
               headerTitle:props=><Text style={{fontSize:20,marginLeft:Platform.OS==="ios"?-100: 20,color:colors.textDark}}>Log In</Text>,
               headerStyle:{backgroundColor:colors.primaryBackground,elevation: 0,shadowOpacity: 0,borderBottomWidth: 0},
               headerTintColor:colors.textDark,
-              headerRight:props=>(<TouchableOpacity><Text style={{textDecorationLine:"underline",color:colors.textLight,fontSize:16,marginRight:15}}>as Guest</Text></TouchableOpacity>),
-              headerLeft:props=><Hamburger {...props}/>
-            }} />
+              headerRight:props=>{
+                return(
+                  this.state.isLoading?
+                    <ActivityIndicator size="small" style={{marginRight:10}} color={colors.textLight}/>
+                    :
+                    <TouchableOpacity onPress={this.asGuest}>
+                      <Text style={{textDecorationLine:"underline",color:colors.textLight,fontSize:16,marginRight:15}}>
+                        as Guest
+                      </Text>
+                    </TouchableOpacity>
+                  
+                  )},
+              headerLeft:props=><Hamburger {...props} navigation={navigation}/>
+            })} />
 
-            <Stack.Screen name="Signup" component={imports.signup} options={{
+            <Stack.Screen name="Signup" component={imports.signup} options={({navigation})=>({
               headerTitle:props=><Text style={{fontSize:20,marginLeft:Platform.OS==="ios"?-100: 20,color:colors.textDark}}>Sign Up</Text>,
               headerStyle:{backgroundColor:colors.primaryBackground,elevation: 0,shadowOpacity: 0,borderBottomWidth: 0},
               headerTintColor:colors.textDark,
-              headerRight:props=>(<TouchableOpacity><Text style={{textDecorationLine:"underline",color:colors.textLight,fontSize:16,marginRight:15}}>as Guest</Text></TouchableOpacity>),
-              headerLeft:props=><Hamburger {...props}/>
-            }} />
+              
+              headerRight:props=>{
+                return(
+                  this.state.isLoading?
+                    <ActivityIndicator size="small" style={{marginRight:10}} color={colors.textLight}/>
+                    :
+                    <TouchableOpacity onPress={this.asGuest}>
+                      <Text style={{textDecorationLine:"underline",color:colors.textLight,fontSize:16,marginRight:15}}>
+                        as Guest
+                      </Text>
+                    </TouchableOpacity>
+                  
+                  )},
+              headerLeft:props=><Hamburger {...props} navigation={navigation}/>
+            })} />
           </>
       }
         
@@ -63,8 +108,9 @@ export default class App extends Component {
 class Hamburger extends Component {
   state = {  }
   render() { 
+    console.log(this.props.navigation)
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={this.props.navigation.toggleDrawer}>
         <Image style={{width:30,marginLeft:15,aspectRatio:92/50,height:undefined}} source={require('../images/menu.png')}/>
       </TouchableOpacity>
       );

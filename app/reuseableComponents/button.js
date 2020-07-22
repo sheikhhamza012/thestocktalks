@@ -33,7 +33,7 @@ class App extends Component {
                     </View>
                 }
                 {this.props.isLoading?
-                <ActivityIndicator color={"#fff"} size={"small"}/>
+                <ActivityIndicator color={this.textStyle()} size={"small"}/>
                 :
                 <Text style={[this.textStyle(),styles.button.text]}>{this.props.text}</Text>
                 }
