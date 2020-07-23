@@ -221,12 +221,12 @@ class App extends Component {
 
                     />
                     <View style={{height:40}}/>
-                    <View style={{flex:1,flexDirection:"row",justifyContent:"space-around"}}>
+                    <View style={{ flex:1,flexDirection:"row",justifyContent:"space-around"}}>
 
-                        <TouchableOpacity onPress={()=>this.setState({form:{gender:"m"}})} style={[styles.radio,this.state.form.gender=="m"?styles.radioSelected:{}]}>
+                        <TouchableOpacity onPress={()=>this.setState({form:{...this.state.form,gender:"m"}})} style={[styles.radio,this.state.form.gender=="m"?styles.radioSelected:{}]}>
                             <Text style={{fontSize:18,color:this.state.form.gender=="m"?colors.primaryBackground:colors.textDark}}>Male</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this.setState({form:{gender:"f"}})}  style={[styles.radio,this.state.form.gender=="f"?styles.radioSelected:{}]}>
+                        <TouchableOpacity onPress={()=>this.setState({form:{...this.state.form,gender:"f"}})}  style={[styles.radio,this.state.form.gender=="f"?styles.radioSelected:{}]}>
                             <Text style={{fontSize:18,color:this.state.form.gender=="f"?colors.primaryBackground:colors.textDark}}>Female</Text>
                         </TouchableOpacity>
                     </View>

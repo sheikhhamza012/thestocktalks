@@ -1,10 +1,13 @@
-export const url="http://192.168.10.11:3000/api/";
+export const url="http://192.168.10.8:3000/api/";
 // export const url="http://10.0.2.2:3000/";
 // export const url="https://therollingstove.herokuapp.com/";
 export const api={
     register: url+'users/',
     login: url+'users/login',
-    guest:url+'users/guest'
+    guest:url+'users/guest',
+    getSymbols:url+'stocks/search',
+    getStock:url+'stocks/',
+    postComment:url+'comments/'
     
 }
 export const colors={
