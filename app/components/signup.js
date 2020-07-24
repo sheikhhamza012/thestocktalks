@@ -59,6 +59,7 @@ class App extends Component {
             .ref(`${filename}`)
         var uploded= await ref.put(blob)
         var url= await ref.getDownloadURL()
+        console.log(url)
         this.setState({isLoading:false,form:{...this.state.form,pictureUrl:url}})
     }
     _pickImage = async () => {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View,AsyncStorage,TouchableOpacity,TextInput,TouchableHighlight,Dimensions,Image ,StyleSheet,ScrollView, ColorPropType, ActivityIndicator} from 'react-native';
+import { View,AsyncStorage,KeyboardAvoidingView,TouchableOpacity,TextInput,TouchableHighlight,Dimensions,Image ,StyleSheet,ScrollView, ColorPropType, ActivityIndicator, Platform} from 'react-native';
 import Text  from '../reuseableComponents/Text';
 import Button  from '../reuseableComponents/button';
 import {AntDesign as Icon} from '@expo/vector-icons'
@@ -58,7 +58,7 @@ class App extends Component {
                                 :
                             <>
                                 <View style={{height:15}}/>
-                                <Text onPress={()=>this.props.dispatch({type:"LOGOUT"})} style={{fontSize:18,color:colors.textDark}}>
+                                <Text style={{fontSize:18,color:colors.textDark}}>
                                     {home.stock.stockdescription}
                                 </Text>  
                                 <Text style={{fontSize:16,color:colors.textLight}}>
@@ -68,11 +68,13 @@ class App extends Component {
                                         <Text style={{fontSize:42,color:colors.textDark}}>
                                             {home.stock.price}
                                         </Text> 
-                                        <Text style={{fontSize:16,color:colors.green}}>
-                                            +{home.stock.up+"%  "}
-                                            <Text style={{fontSize:16,color:colors.red}}>
-                                                -{home.stock.down}%
-                                            </Text> 
+                                        <Text style={{fontSize:16,color:home.stock.regularMarketChange<0?colors.red:colors.green}}>
+                                            ${home.stock.regularMarketChange.split('-').pop()+"  ("+home.stock.regularMarketChangePercent.split('-').pop()+") "} 
+                                            <Text style={{color:colors.textDark}}> Today</Text>
+                                        </Text> 
+                                        <Text style={{fontSize:16,color:home.stock.postMarketChange<0?colors.red:colors.green}}>
+                                            ${home.stock.postMarketChange.split('-').pop()+"  ("+home.stock.postMarketChangePercent.split('-').pop()+") "} 
+                                            <Text style={{color:colors.textDark}}> After </Text>
                                         </Text> 
                                 </View>
 
@@ -162,12 +164,12 @@ class App extends Component {
                                 <Icon name="message1" color={colors.textDark} size={32}/>
                             </TouchableOpacity>
                             :
-                            <View style={styles.commentModal}>
+                            <KeyboardAvoidingView behavior = {Platform.OS=="ios"?"padding":"height"} keyboardVerticalOffset = {80}  style={styles.commentModal}>
                                 <TouchableOpacity style={{paddingHorizontal:20}} onPress={()=>this.setState({commentFieldContainer:!this.state.commentFieldContainer})} >
                                     <View style={styles.commentModalCloseBar}/>
                                 </TouchableOpacity>
                                 <Field type="comment" isLoading={this.state.isCommenting} handleInput={t=>this.setState({comment:t})} value={this.state.comment} onSubmitEditing={this.addComment}  text="type here to disuss about traiding"/>
-                            </View>
+                            </KeyboardAvoidingView>
                         }
                     </>
                 }
