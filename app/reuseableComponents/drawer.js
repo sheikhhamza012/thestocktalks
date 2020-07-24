@@ -15,6 +15,7 @@ export default class Drawer extends Component {
     }
     logout=()=>{
         AsyncStorage.clear()
+        this.props.navigation.closeDrawer()
         this.props.dispatch({type:"LOGOUT"})
     }
     render() {
@@ -28,10 +29,16 @@ export default class Drawer extends Component {
                     }
                     {!this.props.isLoggedIn&&
                     <>
-                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("Signup")} style={{width:"100%",padding:10,paddingVertical:20,backgroundColor:"rgba(255,255,255,0.1)"}}>
+                        <TouchableOpacity onPress={()=>{
+                            this.props.navigation.closeDrawer()
+                            this.props.navigation.navigate("Signup")
+                            }} style={{width:"100%",padding:10,paddingVertical:20,backgroundColor:"rgba(255,255,255,0.1)"}}>
                             <Text style={{color:colors.textDark}}>Sign Up</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("Login")} style={{width:"100%",padding:10,paddingVertical:20,backgroundColor:"rgba(255,255,255,0.1)"}}>
+                        <TouchableOpacity onPress={()=>{
+                            this.props.navigation.closeDrawer()
+                            this.props.navigation.navigate("Login")
+                            }} style={{width:"100%",padding:10,paddingVertical:20,backgroundColor:"rgba(255,255,255,0.1)"}}>
                             <Text style={{color:colors.textDark}}>Log In</Text>
                         </TouchableOpacity>
 
