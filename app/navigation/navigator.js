@@ -17,10 +17,10 @@ export default class App extends Component {
   componentDidMount=()=>{
     setTimeout(async()=>{
       var token = await AsyncStorage.getItem('token')
-      var firstName = await AsyncStorage.getItem('firstName')
+      var name = await AsyncStorage.getItem('name')
       this.setState({isLoggingIn:false})
       if(token){
-        this.props.dispatch({type:"LOGIN",data:firstName})
+        this.props.dispatch({type:"LOGIN",data:name})
       }
     },1000 )
   }
