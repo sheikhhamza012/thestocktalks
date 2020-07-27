@@ -64,7 +64,7 @@ class App extends Component {
                                 <Text style={{fontSize:16,color:colors.textLight}}>
                                     {home.stock.stocksymbol}
                                 </Text>  
-                                <View style={{padding:20,alignItems:"center",justifyContent:"center"}}>
+                                <View style={{paddingVertical:20,justifyContent:"center"}}>
                                         <Text style={{fontSize:42,color:colors.textDark}}>
                                             {home.stock.price}
                                         </Text> 
@@ -74,10 +74,70 @@ class App extends Component {
                                         </Text> 
                                         <Text style={{fontSize:16,color:home.stock.postMarketChange<0?colors.red:colors.green}}>
                                             ${home.stock.postMarketChange.split('-').pop()+"  ("+home.stock.postMarketChangePercent.split('-').pop()+") "} 
-                                            <Text style={{color:colors.textDark}}> After </Text>
+                                            <Text style={{color:colors.textDark}}> After-Hours </Text>
                                         </Text> 
                                 </View>
 
+
+                                <View>
+                                    <Text style={{color:colors.textDark,fontSize:28,marginBottom:10}}>Stats </Text>
+                                    <View style={{flexDirection:"row"}}>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{color:colors.textLight}}>Open</Text>
+                                            <Text style={{color:colors.textDark}}>{home.stock.regularMarketOpen?home.stock.regularMarketOpen:"-"}</Text>
+                                        </View>
+                                        <View style={{width:15}}/>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{color:colors.textLight}}>Volume</Text>
+                                            <Text style={{color:colors.textDark}}>{home.stock.regularMarketVolume?home.stock.regularMarketVolume:"-"}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{flexDirection:"row"}}>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{color:colors.textLight}}>High</Text>
+                                            <Text style={{color:colors.textDark}}>{home.stock.regularMarketDayHigh?home.stock.regularMarketDayHigh:"-"}</Text>
+                                        </View>
+                                        <View style={{width:15}}/>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{color:colors.textLight}}>Avg Vol</Text>
+                                            <Text style={{color:colors.textDark}}>{home.stock.averageDailyVolume10Day?home.stock.averageDailyVolume10Day:"-"}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{flexDirection:"row"}}>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{color:colors.textLight}}>Low</Text>
+                                            <Text style={{color:colors.textDark}}>{home.stock.regularMarketDayLow?home.stock.regularMarketDayLow:"-"}</Text>
+                                        </View>
+                                        <View style={{width:15}}/>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{color:colors.textLight}}>Mkt Cap</Text>
+                                            <Text style={{color:colors.textDark}}>{home.stock.marketCap?home.stock.marketCap:"-"}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{flexDirection:"row"}}>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{color:colors.textLight}}>52 Wk High</Text>
+                                            <Text style={{color:colors.textDark}}>{home.stock.fiftyTwoWeekHigh?home.stock.fiftyTwoWeekHigh:"-"}</Text>
+                                        </View>
+                                        <View style={{width:15}}/>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{color:colors.textLight}}>#Employees</Text>
+                                            <Text style={{color:colors.textDark}}>{home.stock.fullTimeEmployees?home.stock.fullTimeEmployees:"-"}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{flexDirection:"row"}}>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{color:colors.textLight}}>52 Wk Low</Text>
+                                            <Text style={{color:colors.textDark}}>{home.stock.fiftyTwoWeekLow?home.stock.fiftyTwoWeekLow:"-"}</Text>
+                                        </View>
+                                        <View style={{width:15}}/>
+                                        <View style={styles.tableRow}>
+                                            <Text style={{color:colors.textLight}}>Div/Yield</Text>
+                                            <Text style={{color:colors.textDark}}>{home.stock.dividendYield?home.stock.dividendYield:"-"}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+{/* 
                                 <View >
                                     <LineChart
                                         data={{
@@ -134,7 +194,7 @@ class App extends Component {
                                     <View style={[{padding:5,borderRadius:5}]}><Text style={{color:colors.textDark,}}>6M</Text></View>
                                     <View style={[{padding:5,borderRadius:5}]}><Text style={{color:colors.textDark,}}>1Y</Text></View>
                                     <View style={[{padding:5,borderRadius:5}]}><Text style={{color:colors.textDark,}}>MAX</Text></View>
-                                </View>
+                                </View> */}
 
                                 <View style={{height:30}} />
 
@@ -183,6 +243,14 @@ const styles=StyleSheet.create({
         backgroundColor:colors.primaryBackground,
         padding:15,
         paddingTop:5
+    },
+    tableRow:{
+        flex:1,
+        flexDirection:"row",
+        justifyContent:"space-between",
+         paddingVertical:10,
+         borderBottomWidth:.5,
+        borderColor:colors.textLight
     },
     commentModalCloseBar:{
         width:30,

@@ -59,7 +59,6 @@ class App extends Component {
             .ref(`${filename}`)
         var uploded= await ref.put(blob)
         var url= await ref.getDownloadURL()
-        console.log(url)
         this.setState({isLoading:false,form:{...this.state.form,pictureUrl:url}})
     }
     _pickImage = async () => {
@@ -89,7 +88,6 @@ class App extends Component {
         this.setState({form:{...this.state.form,[x.name]:x.val},errors:{...this.state.errors,[x.name]:null}})
     }
     reportError=(msg)=>{
-        console.log(msg)
         if(msg.includes("firstName")){
             let str=msg.split("\"")
             this.setState({errors:{...this.state.error,fname:"Field"+str[str.length-1]}})
@@ -123,7 +121,6 @@ class App extends Component {
         axios('post',api.register,form).then(async ({data})=>{
             this.setState({isLoading:false})
             if(data.error){
-                console.log(data)
                 this.reportError(data.msg);
                 return
             }
@@ -140,7 +137,8 @@ class App extends Component {
                 isLoading:false
             })
             AsyncStorage.setItem('token',data.token)
-            this.props.dispatch({type:'LOGIN'})
+            AsyncStorage.setItem('name',data.name)
+            this.props.dispatch({type:'LOGIN',data:data.name})
         }).catch(e=>{
             this.setState({isLoading:false})
             this.refs.toast.show(e.message)

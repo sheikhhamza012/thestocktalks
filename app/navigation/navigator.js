@@ -17,9 +17,10 @@ export default class App extends Component {
   componentDidMount=()=>{
     setTimeout(async()=>{
       var token = await AsyncStorage.getItem('token')
+      var firstName = await AsyncStorage.getItem('firstName')
       this.setState({isLoggingIn:false})
       if(token){
-        this.props.dispatch({type:"LOGIN"})
+        this.props.dispatch({type:"LOGIN",data:firstName})
       }
     },1000 )
   }
@@ -32,7 +33,8 @@ export default class App extends Component {
           return
       }
       AsyncStorage.setItem('token',data.token)
-      this.props.dispatch({type:'LOGIN'})
+      AsyncStorage.setItem('name',data.name)
+      this.props.dispatch({type:'LOGIN',data:data.name})
   }).catch(e=>{
       this.setState({isLoading:false})
       this.refs.toast.show(e.message)
@@ -52,7 +54,7 @@ export default class App extends Component {
             headerStyle:{backgroundColor:colors.primaryBackground,elevation: 0,shadowOpacity: 0,borderBottomWidth: 0},
             headerTintColor:colors.textDark,
             headerTitle:props=><Text style={{fontSize:20,marginLeft:Platform.OS==="ios"?-100: 20,color:colors.textDark}}></Text>,
-            headerRight:props=>(<TouchableOpacity><Text style={{textDecorationLine:"underline",color:colors.textLight,fontSize:16,marginRight:15}}>as Guest</Text></TouchableOpacity>),
+            headerRight:props=>(<TouchableOpacity><Text style={{textDecorationLine:"underline",color:colors.textLight,fontSize:16,marginRight:15}}>{this.props.name}</Text></TouchableOpacity>),
             headerLeft:props=><Hamburger {...props} navigation={navigation}/>
           })} />
           :
@@ -108,10 +110,9 @@ export default class App extends Component {
 class Hamburger extends Component {
   state = {  }
   render() { 
-    console.log(this.props.navigation)
     return (
       <TouchableOpacity onPress={this.props.navigation.toggleDrawer}>
-        <Image style={{width:30,marginLeft:15,aspectRatio:92/50,height:undefined}} source={require('../images/menu.png')}/>
+        <Image style={{width:30,marginLeft:15,aspectRatio:1,height:undefined,tintColor:colors.textLight}} source={require('../images/menu.png')}/>
       </TouchableOpacity>
       );
   }

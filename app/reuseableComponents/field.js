@@ -66,7 +66,6 @@ class App extends Component {
                                 onFocus={this.onFocus}
                                 secureTextEntry={this.state.showPassword}
                                 onSubmitEditing={()=>{
-                                    console.log(this.props)
                                     if(next){
                                         next().focus()
                                     }

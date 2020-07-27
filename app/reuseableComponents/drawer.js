@@ -20,7 +20,7 @@ export default class Drawer extends Component {
     }
     render() {
         return (
-            <ScrollView contentContainerStyle={{backgroundColor:"rgba(0,0,0,1)",flex:1}}>
+            <ScrollView contentContainerStyle={{backgroundColor:colors.primaryBackground,flex:1}}>
                 <SafeAreaView style={{}}>
                     {this.props.isLoggedIn&&
                     <TouchableOpacity onPress={this.logout} style={{width:"100%",padding:10,paddingVertical:20,backgroundColor:"rgba(255,255,255,0.1)"}}>

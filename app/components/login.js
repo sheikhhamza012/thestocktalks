@@ -37,7 +37,6 @@ class App extends Component {
         axios('post',api.login,form).then(async ({data})=>{
             this.setState({isLoading:false})
             if(data.error){
-                console.log(data)
                 await this.setState({errors:{...this.state.errors, password:data.msg}})
                 return
             }
@@ -49,7 +48,8 @@ class App extends Component {
                 isLoading:false
             })
             AsyncStorage.setItem('token',data.token)
-            this.props.dispatch({type:'LOGIN'})
+            AsyncStorage.setItem('name',data.name)
+            this.props.dispatch({type:'LOGIN',data:data.name})
         }).catch(e=>{
             this.setState({isLoading:false})
             this.refs.toast.show(e.message)
