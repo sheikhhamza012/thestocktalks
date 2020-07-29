@@ -223,10 +223,10 @@ class App extends Component {
                     <View style={{ flex:1,flexDirection:"row",justifyContent:"space-around"}}>
 
                         <TouchableOpacity onPress={()=>this.setState({form:{...this.state.form,gender:"m"}})} style={[styles.radio,this.state.form.gender=="m"?styles.radioSelected:{}]}>
-                            <Text style={{fontSize:18,color:this.state.form.gender=="m"?colors.primaryBackground:colors.textDark}}>Male</Text>
+                            <Text style={{fontSize:18,textAlign:"center",color:this.state.form.gender=="m"?colors.primaryBackground:colors.textDark}}>Male</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={()=>this.setState({form:{...this.state.form,gender:"f"}})}  style={[styles.radio,this.state.form.gender=="f"?styles.radioSelected:{}]}>
-                            <Text style={{fontSize:18,color:this.state.form.gender=="f"?colors.primaryBackground:colors.textDark}}>Female</Text>
+                            <Text style={{fontSize:18,textAlign:"center",color:this.state.form.gender=="f"?colors.primaryBackground:colors.textDark}}>Female</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -268,8 +268,8 @@ const styles=StyleSheet.create({
         padding:15,
         borderColor:colors.textDark,
         borderRadius:5,
-        borderWidth:2,
-        borderStyle:"dashed",
+        borderWidth:1,
+        // borderStyle:"dashed",
         alignSelf:"center",
         width:130
     }

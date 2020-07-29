@@ -1,14 +1,16 @@
-export const url="http://192.168.10.9:3000/api/";
+// export const url="http://192.168.10.9:3000/api/";
 // export const url="http://10.0.2.2:3000/";
-// export const url="https://therollingstove.herokuapp.com/";
+export const url="https://thestock-prod.herokuapp.com/api/";
 export const api={
     register: url+'users/',
     login: url+'users/login',
     guest:url+'users/guest',
     getSymbols:url+'stocks/search',
     getStock:url+'stocks/',
-    postComment:url+'comments/'
-    
+    postComment:url+'comments/',
+    requestCode:url+'users/forgot',
+    verifyCode:url+'users/verifyCode',
+    updatePass:url+'users/updatePass'
 }
 export const colors={
     primaryBackground:"#161F40",

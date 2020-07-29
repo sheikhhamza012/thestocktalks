@@ -12,12 +12,7 @@ class App extends Component {
     }
     render() { 
         return ( 
-            <View style={{backgroundColor:colors.primaryBackground,flex:1,justifyContent:"center",alignItems:"center"}}>
-                <Text style={{color:colors.textLight,fontSize:34}}>
-                    The Stock Talks
-                </Text>
-
-            </View>
+            <Image style={{resizeMode:"cover",width:"100%",height:"100%"}} source={require('../assets/splash.png')}/>
          );
     }
 }

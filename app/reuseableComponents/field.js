@@ -44,7 +44,7 @@ class App extends Component {
         }
     }
     render() { 
-        const {labelText,value,autoCapitalise,password,errorMsg,handleInput,name,refs,next} = this.props
+        const {labelText,value,autoCapitalise,password,errorMsg,handleInput,keyboardType,name,refs,next} = this.props
         return (
             <>
                 <AnimatedTouchable onPress={this.onFocus} style={{borderBottomColor:colors.textLight,borderBottomWidth:1,paddingVertical:10,height:this.state.containerHeight}}>
@@ -59,7 +59,8 @@ class App extends Component {
                                 blurOnSubmit={next?false:true}
                                 selectionColor={colors.textLight}
                                 ref={r=>{
-                                    refs(r)
+                                    if(refs)
+                                        refs(r)
                                     return this.field=r
                                 }}
                                 onBlur={this.onBlur}
@@ -72,6 +73,7 @@ class App extends Component {
                                 }}
                                 autoCapitalize={autoCapitalise}
                                 value={value}
+                                keyboardType={keyboardType?keyboardType:"default"}
                             />
                             {password&&
                                 <TouchableHighlight style={styles.eye} onPress={()=>this.setState({showPassword:!this.state.showPassword})} >
@@ -105,6 +107,7 @@ const styles = StyleSheet.create({
         fontFamily:'ABeeZee',
         color:colors.textDark,
         fontSize:20,
+        textDecorationLine:"none"
     }
 })
 export default App;

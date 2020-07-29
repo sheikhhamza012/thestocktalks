@@ -25,9 +25,10 @@ export default class App extends React.Component {
       return ( 
         <Provider store={store}>
           <NavigationContainer>
-            <Drawer.Navigator drawerContent={props=><DrawerComponent {...props}/>} initialRouteName="Home">
+            {/* <Drawer.Navigator drawerContent={props=><DrawerComponent {...props}/>} initialRouteName="Home">
               <Drawer.Screen name="Home" component={()=><Navigator/>} />
-            </Drawer.Navigator>
+            </Drawer.Navigator> */}
+            <Navigator/>
           </NavigationContainer>
         </Provider>
       );

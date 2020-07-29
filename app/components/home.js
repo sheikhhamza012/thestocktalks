@@ -16,6 +16,21 @@ class App extends Component {
     convertTime=(time)=>{
         return moment(time).fromNow()
     }
+    openStock=(sym)=>{
+        this.setState({isLoading:true})
+        axios('get',api.getStock+sym).then(({data})=>{
+            this.setState({isLoading:false})
+            if(data.error){
+                this.refs.toast.show(data.msg)
+                return
+            }
+            this.props.dispatch({type:"SET_STOCK",data:data.obj})
+            this.props.dispatch({type:"STOP_SEARCHING"})
+        }).catch(e=>{
+            this.setState({isLoading:false})
+            this.refs.toast.show(e.message)
+        })
+    }
     addComment=()=>{
         this.setState({isCommenting:true})
         if(this.state.comment.length<=0){
@@ -37,6 +52,9 @@ class App extends Component {
             this.refs.toast.show(e.message)
         })
     }
+    componentDidMount=()=>{
+        this.openStock("TSLA")
+    }
     render() { 
         const {home} = this.props
         return (
@@ -52,7 +70,8 @@ class App extends Component {
                         <>
                         {  !this.props.home.stock?
                             <View style={{justifyContent:"center",flexDirection:"row",alignItems:"center",flex:1,backgroundColor:colors.primaryBackground}}>
-                                <Icon name="search1" color={colors.textLight} size={42}/>
+                                {/* <Icon name="search1" color={colors.textLight} size={42}/> */}
+                                <ActivityIndicator />
                                 {/* <Text style={{color:colors.textLight,fontSize:22, marginLeft:10}}>Search</Text> */}
                             </View>  
                                 :
@@ -206,7 +225,7 @@ class App extends Component {
 
                                 <View style={{marginBottom:50}}>
                                 {this.props.home.stock.comments.map((x,i)=>
-                                    <Comment key={i} onReplyPress={()=>this.setState({commentFieldContainer:!this.state.commentFieldContainer})} data={{name:`${x.user.firstname} ${x.user.lastname}`,designation:x.user.email,time:this.convertTime(x.createdat),comment:x.comment,picture:x.pictureUrl}}/>
+                                    <Comment key={i} onReplyPress={()=>this.setState({commentFieldContainer:!this.state.commentFieldContainer})} data={{name:`${x.user.firstname} ${x.user.lastname}`,designation:x.user.email,time:this.convertTime(x.createdat),comment:x.comment,picture:x.user.pictureurl}}/>
                                 )}
                                 </View>
                             </>
@@ -331,10 +350,11 @@ class Comment extends Component {
 
     render() {
         const {data} =this.props
+        console.log(data)
         return (
 
             <View style={styles.commentContainer}>
-                <Image style={styles.avatar} source={{uri:data.pictureUrl?data.pictureUrl:""}}/>
+                <Image style={styles.avatar} source={{uri:data.picture?data.picture:""}}/>
                 <View  style={{flex:1,height:"100%",paddingHorizontal:10}}>
                     <Text style={{fontSize:18,color:colors.textDark}}>
                         {data.name}

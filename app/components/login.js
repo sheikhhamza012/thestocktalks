@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View ,StyleSheet,ScrollView,AsyncStorage} from 'react-native';
+import { View ,StyleSheet,ScrollView,AsyncStorage,TouchableOpacity,ActivityIndicator} from 'react-native';
 import Text  from '../reuseableComponents/Text';
 import Field  from '../reuseableComponents/field';
 import Button  from '../reuseableComponents/button';
@@ -15,7 +15,8 @@ class App extends Component {
         errors:{
             email:null,
             password:null
-        }
+        },
+        isGuesting:false
     }
 
     submit=async()=>{
@@ -59,6 +60,23 @@ class App extends Component {
     handleInput=x=>{
         this.setState({form:{...this.state.form,[x.name]:x.val},errors:{...this.state.errors,[x.name]:null}})
     }
+    asGuest=()=>{
+        this.setState({isGuesting:true})
+        axios('get',api.guest).then(async ({data})=>{
+          this.setState({isGuesting:false})
+          if(data.error){
+              alert(data.msg);
+              return
+          }
+          AsyncStorage.setItem('token',data.token)
+          AsyncStorage.setItem('name',data.name)
+          this.props.dispatch({type:'LOGIN',data:data.name})
+      }).catch(e=>{
+          this.setState({isGuesting:false})
+          this.refs.toast.show(e.message)
+          }
+      )
+    }
     render() { 
         return (
             <ScrollView style={styles.root} contentContainerStyle={{alignItems:"stretch"}}>
@@ -89,17 +107,33 @@ class App extends Component {
 
                     />
                 <View style={{height:20}}/>
+                <View style={{flexDirection:"row",justifyContent:"space-between"}}>
 
-                <Text style={{color:colors.textLight,textDecorationLine:"underline"}}>Forgot Password?</Text>
+                    <Text onPress={()=>this.props.navigation.navigate("reset_pass")} style={{color:colors.textLight,textDecorationLine:"underline"}}>Forgot Password?</Text>
+                   
+                </View>
                 <View style={{height:20}}/>
 
                 <Button isLoading={this.state.isLoading} onPress={this.submit} text="Log In" style={{alignSelf:"center",height:45}}/>
                 <View style={{height:20}}/>
+                <Text style={{color:colors.textDark,textAlign:"center", marginBottom:10}}>Or</Text>
+                {
+                        this.state.isGuesting?
+                        <ActivityIndicator size="small" style={{marginRight:10,marginBottom:15,}} color={colors.textLight}/>
+                        :
+                        <TouchableOpacity onPress={this.asGuest}>
+                        <Text style={{textDecorationLine:"underline",color:colors.textLight,marginRight:15,marginBottom:15,textAlign:"center"}}>
+                            as Guest
+                        </Text>
+                        </TouchableOpacity>
+                    
+                    }
 
                 <Text onPress={()=>this.props.navigation.navigate("Signup")} style={{color:colors.textLight,textAlign:"center",textDecorationLine:"underline"}}>Dont have an account yet? <Text style={{color:colors.textDark}}>Sign Up</Text></Text>
                 <View style={{height:40}}/>
-
-                <View style={{flexDirection:"row"}}>
+                
+              
+                {/* <View style={{flexDirection:"row"}}>
                     <View style={{flex:1,height:2,backgroundColor:colors.textLight,marginTop:10}}></View>
                     <Text style={{color:colors.textLight,paddingHorizontal:10,textAlign:"center",textDecorationLine:"underline"}}>  or login with  </Text>
                     <View style={{flex:1,height:2,backgroundColor:colors.textLight,marginTop:10,}}></View>
@@ -111,7 +145,7 @@ class App extends Component {
                     <View style={{width:10}}/>
                     <Button iconLeft="facebook-square" color={colors.textDark} text="Facebook" type="fb" style={{alignSelf:"center",height:45,flex:1}}/>
 
-                </View>
+                </View> */}
                 
             </ScrollView>
         )}
