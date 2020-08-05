@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View,AsyncStorage,KeyboardAvoidingView,TouchableOpacity,TextInput,TouchableHighlight,Dimensions,Image ,StyleSheet,ScrollView, ColorPropType, ActivityIndicator, Platform} from 'react-native';
+import { View,Modal,AsyncStorage,KeyboardAvoidingView,TouchableOpacity,TextInput,TouchableHighlight,Dimensions,Image ,StyleSheet,ScrollView, ColorPropType, ActivityIndicator, Platform} from 'react-native';
 import Text  from '../reuseableComponents/Text';
 import Button  from '../reuseableComponents/button';
 import {AntDesign as Icon} from '@expo/vector-icons'
@@ -10,9 +10,10 @@ import {LineChart} from 'react-native-chart-kit'
 import { axios } from '../reuseableComponents/externalFunctions';
 import Toast from 'react-native-easy-toast';
 import moment from 'moment'
+import { WebView } from 'react-native-webview';
 
 class App extends Component {
-    state = {  commentFieldContainer:false,comment:"",isCommenting:false}
+    state = {  commentFieldContainer:false,visit_url:"http://google.com",showWebView:false,comment:"",isCommenting:false}
     convertTime=(time)=>{
         return moment(time).fromNow()
     }
@@ -54,6 +55,9 @@ class App extends Component {
     }
     componentDidMount=()=>{
         this.openStock("TSLA")
+    }
+    openUrl=(url)=>{
+            this.setState({...this.state,showWebView:true,visit_url:url})
     }
     render() { 
         const {home} = this.props
@@ -225,7 +229,7 @@ class App extends Component {
 
                                 <View style={{marginBottom:50}}>
                                 {this.props.home.stock.comments.map((x,i)=>
-                                    <Comment key={i} onReplyPress={()=>this.setState({commentFieldContainer:!this.state.commentFieldContainer})} data={{name:`${x.user.firstname} ${x.user.lastname}`,designation:x.user.email,time:this.convertTime(x.createdat),comment:x.comment,picture:x.user.pictureurl}}/>
+                                    <Comment openUrl={this.openUrl} key={i} onReplyPress={()=>this.setState({commentFieldContainer:!this.state.commentFieldContainer})} data={{name:`${x.user.firstname} ${x.user.lastname}`,designation:x.user.email,time:this.convertTime(x.createdat),comment:x.comment,picture:x.user.pictureurl}}/>
                                 )}
                                 </View>
                             </>
@@ -235,7 +239,23 @@ class App extends Component {
                     <View style={{height:50}}/>
 
                 </ScrollView>
-                {this.props.home.stock&& 
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={this.state.showWebView}
+                    onRequestClose={() => {
+                        this.setState({...this.state,showWebView:false,visit_url:"",})
+                    }}
+                >
+                    <View style={{flexDirection:"row",justifyContent:"space-between",backgroundColor:colors.primaryBackground,paddingTop:20,paddingHorizontal:20,alignItems:"center",height:50}}>
+                        <Text style={{color:colors.textDark}}>{this.state.visit_url}</Text>
+                        <TouchableOpacity onPress={()=>this.setState({...this.state,showWebView:false,visit_url:"",})}>
+                            <Icon name="close" size={22} color={colors.textDark} />
+                        </TouchableOpacity>
+                    </View>
+                    <WebView source={{ uri: this.state.visit_url }} />
+                </Modal>
+                {this.props.home.stock&& !this.state.showWebView&&
                     <>
                         {
                             !this.state.commentFieldContainer?
@@ -347,7 +367,35 @@ class Comment extends Component {
             
         }
     }
+    textwithlink=(str)=>{
+        var find="https://"
+        var url_start=""
+        var url_end =""
+        var before=""
+        var after=""
+        var url=""
+        if(str.includes("http://"))
+            find="http://"
+        url_start = str.indexOf(find)
 
+        if(url_start>=0){
+            url_end =  str.substring(url_start,str.length).indexOf(' ')
+            if(url_end<0){
+                url_end=str.length
+            }
+            before=str.substring(0,url_start)
+            after=str.substring(url_end+url_start,str.length)
+            url=str.substring(url_start,url_end+url_start)
+        }else{
+            before=str
+            after=""
+            url=""
+        }
+        return(
+        <Text style={{fontSize:14,color:colors.textDark,marginBottom:10}}>
+            {before}<Text onPress={()=>this.props.openUrl(url)} style={{textDecorationLine: 'underline'}}>{url}</Text>{after}
+        </Text> )
+    }
     render() {
         const {data} =this.props
         console.log(data)
@@ -362,9 +410,7 @@ class Comment extends Component {
                     <Text style={{fontSize:14,color:colors.textDark,marginBottom:10}}>
                         {data.designation}
                     </Text> 
-                    <Text style={{fontSize:14,color:colors.textDark,marginBottom:10}}>
-                        {data.comment}    
-                    </Text> 
+                    {this.textwithlink(data.comment)}
                     <Text style={{fontSize:14,textAlign:"right",color:colors.textDark,marginBottom:5}}>
                         {data.time}{"  "}
                         <Text onPress={this.props.onReplyPress} style={{fontSize:14,color:colors.textDark,marginBottom:5}}>
